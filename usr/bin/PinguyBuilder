@@ -865,10 +865,10 @@ FOO
 
     #checking the size of the compressed filesystem to ensure it meets the iso9660 spec for a single file"
     SQUASHFSSIZE=`ls -s $WORKDIR/ISOTMP/casper/filesystem.squashfs | awk -F " " '{print $1}'`
-    if [ "$SQUASHFSSIZE" -gt "3999999" ]; then
-        log_msg "The compressed filesystem is larger than genisoimage allows for a single file. You must try to reduce the amount of data you are backing up and try again."
-        exit 1
-    fi
+    #if [ "$SQUASHFSSIZE" -gt "3999999" ]; then
+    #    log_msg "The compressed filesystem is larger than genisoimage allows for a single file. You must try to reduce the amount of data you are backing up and try again."
+    #    exit 1
+    #fi
 
     #add filesystem size for lucid
     log_msg "Calculating the installed filesystem size for the installer"
@@ -899,10 +899,10 @@ iso (){
     fi
 
     SQUASHFSSIZE=`ls -s $WORKDIR/ISOTMP/casper/filesystem.squashfs | awk -F " " '{print $1}'`
-    if [ "$SQUASHFSSIZE" -gt "3999999" ]; then
-        log_msg "The compressed filesystem is larger than genisoimage allows for a single file. You must try to reduce the amount of data you are backing up and try again."
-        exit 1
-    fi
+    #if [ "$SQUASHFSSIZE" -gt "3999999" ]; then
+    #    log_msg "The compressed filesystem is larger than genisoimage allows for a single file. You must try to reduce the amount of data you are backing up and try again."
+    #    exit 1
+    #fi
 
     #Step 6.5 - Added by Tim Farley. Make ISO compatible with Ubuntu Startup Disk Creator (Karmic).
     log_msg "Making disk compatible with Ubuntu Startup Disk Creator."
@@ -937,7 +937,7 @@ iso (){
 
     # Step 8 - Make the ISO file
     log_msg "Creating $CUSTOMISO in $WORKDIR"
-    $CREATEISO -iso-level 3 -quiet -r -V "$LIVECDLABEL" -cache-inodes -J -l -b isolinux/isolinux.bin -c isolinux/boot.cat -no-emul-boot -boot-load-size 4 -boot-info-table -eltorito-alt-boot -e boot/grub/efi.img -no-emul-boot -o $WORKDIR/$CUSTOMISO "$WORKDIR/ISOTMP" 2>>$WORKDIR/PinguyBuilder.log 1>>$WORKDIR/PinguyBuilder.log
+    xorriso -as mkisofs -iso-level 3 -quiet -r -V "$LIVECDLABEL" -cache-inodes -J -l -b isolinux/isolinux.bin -c isolinux/boot.cat -no-emul-boot -boot-load-size 4 -boot-info-table -eltorito-alt-boot -e boot/grub/efi.img -no-emul-boot -o $WORKDIR/$CUSTOMISO "$WORKDIR/ISOTMP" 2>>$WORKDIR/PinguyBuilder.log 1>>$WORKDIR/PinguyBuilder.log
     if [ ! -f $WORKDIR/$CUSTOMISO ]; then
         log_msg "The iso was not created. There was a problem. Exiting"
         exit 1
